@@ -139,9 +139,9 @@
                     <label for="service" class="form-label">Service</label>
                     <select id="service" name="service" class="form-select" >
                         <option value="" th:selected="${service == ''}">None</option>
-                        <option value="reservation" th:selected="${service == 'reservation'}">Reservation Service</option>
-                        <option value="RCM" th:selected="${service == 'RCM'}">RCM</option>
-                        <option value="Res Delivery" th:selected="${service == 'Res Delivery'}">Res Delivery</option>
+                        <option value="Place Order" th:selected="${service == 'Place Order'}">Place Order</option>
+                        <option value="Reservation Delivery" th:selected="${service == 'Reservation Delivery'}">Reservation Delivery</option>
+                        <option value="Reservation Create/Modify" th:selected="${service == 'Reservation Create/Modify'}">Reservation Create/Modify</option>
                     </select>
                 </div>
                 <div class="col-md-4">
