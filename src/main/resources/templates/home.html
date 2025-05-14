@@ -195,11 +195,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="datapayload : ${datapayloads}">
-                        <td th:text="${datapayload.service}"></td>
-                        <td th:text="${datapayload.reservationNumber}"></td>
-                        <td th:text="${datapayload.correlationId}"></td>
-                        <td th:text="${datapayload.timeStamp}"></td>
+                    <tr th:each="payloadDetail : ${payloadDetails}">
+                        <td th:text="${payloadDetail.serviceName}"></td>
+                        <td th:text="${payloadDetail.confirmationNumber}"></td>
+                        <td th:text="${payloadDetail.correlationId}"></td>
+                        <td th:text="${payloadDetail.logTimestamp}"></td>
                         <td>
                             <button class="btn btn-outline-secondary btn-sm btn-hover" onclick="openModal('${service}', '${correlationId}', '${reservationNumber}', '${fromDate}', '${toDate}')">View</button>
                         </td>
@@ -208,9 +208,10 @@
                         </td>
                         <td>
                             <select id="drillDownSelect" class="form-select form-select-sm">
-                                <option value="">Select Option</option>
-                                <option value="payment">Payment</option>
-                                <option value="address">Address</option>
+                                <option th:each="drillDownOption : ${payloadDetail.drillDownOptions}"
+                                        th:value="${drillDownOption}"
+                                        th:text="${drillDownOption}">
+                                </option>
                             </select>
                         </td>
                         <td id="actionsColumn">
