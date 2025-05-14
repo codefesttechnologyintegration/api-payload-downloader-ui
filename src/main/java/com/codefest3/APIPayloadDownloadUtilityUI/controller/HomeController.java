@@ -41,8 +41,8 @@ public class HomeController {
 
         model.addAttribute("payloadDetails", apiPayloadResponse.getPayloadDetailsList());
         model.addAttribute("service", serviceName);
-        model.addAttribute("fromDate", startDate);
-        model.addAttribute("toDate", endDate);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
         model.addAttribute("identifierType", identifierType);
         model.addAttribute("reservationNumber", confirmationNumber);
         model.addAttribute("correlationId", correlationId);
