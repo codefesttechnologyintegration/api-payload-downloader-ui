@@ -158,13 +158,13 @@
                     <label for="identifierType" class="form-label">Identifier Type</label>
                     <select id="identifierType" name="identifierType" class="form-select" onchange="toggleIdentifierInput()">
                         <option value="" th:selected="${identifierType == ''}">Select Identifier</option>
-                        <option value="reservationNumber" th:selected="${identifierType == 'reservationNumber'}">Reservation Number</option>
+                        <option value="confirmationNumber" th:selected="${identifierType == 'confirmationNumber'}">Confrimation Number</option>
                         <option value="correlationId" th:selected="${identifierType == 'correlationId'}">Correlation ID</option>
                     </select>
                     <div id="identifierTypeError" class="error-message" style="display: none;">Please select an identifier type.</div>
                 </div>
                 <div class="col-md-4" id="reservationNumberInput" style="display: none;">
-                    <label for="reservationNumber" class="form-label">Reservation Number</label>
+                    <label for="reservationNumber" class="form-label">Confirmation Number</label>
                     <input type="text" th:value="${reservationNumber}" class="form-control" id="reservationNumber" name="reservationNumber">
                     <div id="reservationNumberError" class="error-message" style="display: none;">Reservation Number is required.</div>
                 </div>
@@ -335,7 +335,7 @@
             reservationNumberInput.style.display = 'none';
             correlationIdInput.style.display = 'none';
 
-            if (identifierType === 'reservationNumber') {
+            if (identifierType === 'confirmationNumber') {
                 reservationNumberInput.style.display = 'block';
             } else if (identifierType === 'correlationId') {
                 correlationIdInput.style.display = 'block';
@@ -377,7 +377,7 @@
                 document.getElementById('identifierTypeError').style.display = 'none';
             }
 
-            if (identifierType === 'reservationNumber' && !reservationNumber) {
+            if (identifierType === 'confirmationNumber' && !reservationNumber) {
                 document.getElementById('reservationNumberError').style.display = 'block';
                 isValid = false;
             } else {
