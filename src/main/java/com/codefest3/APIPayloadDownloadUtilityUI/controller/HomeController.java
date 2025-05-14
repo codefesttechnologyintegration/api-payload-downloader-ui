@@ -31,7 +31,7 @@ public class HomeController {
     public String fetchPayload(@RequestParam("service") String serviceName,
                                @RequestParam(value = "confirmationNumber", required = false) String confirmationNumber,
                                @RequestParam(value = "correlationId", required = false) String correlationId,
-                               @RequestParam(value = "fromDate", required = false) String startDate,
+                               @RequestParam(value = "startDate", required = false) String startDate,
                                @RequestParam(value = "toDate", required = false) String endDate,
                                @RequestParam("identifierType") String identifierType,
 
