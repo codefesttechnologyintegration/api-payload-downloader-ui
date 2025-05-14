@@ -32,7 +32,7 @@ public class HomeController {
                                @RequestParam(value = "confirmationNumber", required = false) String confirmationNumber,
                                @RequestParam(value = "correlationId", required = false) String correlationId,
                                @RequestParam(value = "startDate", required = false) String startDate,
-                               @RequestParam(value = "toDate", required = false) String endDate,
+                               @RequestParam(value = "endDate", required = false) String endDate,
                                @RequestParam("identifierType") String identifierType,
 
                                Model model) {

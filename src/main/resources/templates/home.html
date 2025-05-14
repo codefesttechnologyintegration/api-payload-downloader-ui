@@ -150,9 +150,9 @@
                     <div id="startDateError" class="error-message" style="display: none;">Start Date is required.</div>
                 </div>
                 <div class="col-md-4">
-                    <label for="toDate" class="form-label">End Date</label>
-                    <input type="date" th:value="${endDate}" class="form-control" id="toDate" name="toDate">
-                    <div id="toDateError" class="error-message" style="display: none;">End Date is required.</div>
+                    <label for="endDate" class="form-label">End Date</label>
+                    <input type="date" th:value="${endDate}" class="form-control" id="endDate" name="endDate">
+                    <div id="endDateError" class="error-message" style="display: none;">End Date is required.</div>
                 </div>
                 <div class="col-md-4">
                     <label for="identifierType" class="form-label">Identifier Type</label>
@@ -201,10 +201,10 @@
                         <td th:text="${payloadDetail.correlationId}"></td>
                         <td th:text="${payloadDetail.logTimestamp}"></td>
                         <td>
-                            <button class="btn btn-outline-secondary btn-sm btn-hover" onclick="openModal('${service}', '${correlationId}', '${confirmationNumber}', '${startDate}', '${toDate}')">View</button>
+                            <button class="btn btn-outline-secondary btn-sm btn-hover" onclick="openModal('${service}', '${correlationId}', '${confirmationNumber}', '${startDate}', '${endDate}')">View</button>
                         </td>
                         <td>
-                            <button class="btn btn-outline-secondary btn-sm btn-hover" onclick="downloadMainPayload('${service}', '${correlationId}', '${confirmationNumber}', '${startDate}', '${toDate}')">Download</button>
+                            <button class="btn btn-outline-secondary btn-sm btn-hover" onclick="downloadMainPayload('${service}', '${correlationId}', '${confirmationNumber}', '${startDate}', '${endDate}')">Download</button>
                         </td>
                         <td>
                             <select id="drillDownSelect" class="form-select form-select-sm">
@@ -245,9 +245,9 @@
             e.clearSelection();
         });
 
-        function openModal(service, correlationId, confirmationNumber, startDate, toDate) {
+        function openModal(service, correlationId, confirmationNumber, startDate, endDate) {
             const modal = document.getElementById('previewModal');
-            const payload = `Service: ${service}\nConfirmation ID: ${correlationId}\nConfirmationNumber: ${confirmationNumber}\nStart Date: ${startDate}\nTo Date: ${toDate}`;
+            const payload = `Service: ${service}\nConfirmation ID: ${correlationId}\nConfirmationNumber: ${confirmationNumber}\nStart Date: ${startDate}\nEnd Date: ${endDate}`;
             document.getElementById('modalPayload').innerText = payload;
             modal.style.display = "block";
         }
@@ -257,8 +257,8 @@
             modal.style.display = "none";
         }
 
-        function downloadMainPayload(service, correlationId, confirmationNumber, startDate, toDate) {
-            const payload = `Service: ${service}\nConfirmation ID: ${correlationId}\nConfirmation Number: ${confirmationNumber}\nStart Date: ${startDate}\nTo Date: ${toDate}`;
+        function downloadMainPayload(service, correlationId, confirmationNumber, startDate, endDate) {
+            const payload = `Service: ${service}\nConfirmation ID: ${correlationId}\nConfirmation Number: ${confirmationNumber}\nStart Date: ${startDate}\nEnd Date: ${endDate}`;
             const blob = new Blob([payload], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -347,7 +347,7 @@
             const confirmationNumber = document.getElementById('confirmationNumber').value;
             const correlationId = document.getElementById('correlationId').value;
             const startDate = document.getElementById('startDate').value;
-            const toDate = document.getElementById('toDate').value;
+            const endDate = document.getElementById('endDate').value;
 
             let isValid = true;
 
@@ -358,15 +358,15 @@
                 document.getElementById('startDateError').style.display = 'none';
             }
 
-            if (!toDate) {
-                document.getElementById('toDateError').style.display = 'block';
+            if (!endDate) {
+                document.getElementById('endDateError').style.display = 'block';
                 isValid = false;
             } else {
-                document.getElementById('toDateError').style.display = 'none';
+                document.getElementById('endDateError').style.display = 'none';
             }
 
-            if (startDate && toDate && new Date(startDate) > new Date(toDate)) {
-                alert('Start Date cannot be later than To Date.');
+            if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+                alert('Start Date cannot be later than End Date.');
                 isValid = false;
             }
 
