@@ -163,10 +163,10 @@
                     </select>
                     <div id="identifierTypeError" class="error-message" style="display: none;">Please select an identifier type.</div>
                 </div>
-                <div class="col-md-4" id="reservationNumberInput" style="display: none;">
-                    <label for="reservationNumber" class="form-label">Confirmation Number</label>
-                    <input type="text" th:value="${reservationNumber}" class="form-control" id="reservationNumber" name="reservationNumber">
-                    <div id="reservationNumberError" class="error-message" style="display: none;">Reservation Number is required.</div>
+                <div class="col-md-4" id="confirmationNumberInput" style="display: none;">
+                    <label for="confirmationNumber" class="form-label">Confirmation Number</label>
+                    <input type="text" th:value="${confirmationNumber}" class="form-control" id="confirmationNumber" name="confirmationNumber">
+                    <div id="confirmationNumberError" class="error-message" style="display: none;">Confirmation Number is required.</div>
                 </div>
                 <div class="col-md-4" id="correlationIdInput" style="display: none;">
                     <label for="correlationId" class="form-label">Correlation ID</label>
@@ -201,10 +201,10 @@
                         <td th:text="${payloadDetail.correlationId}"></td>
                         <td th:text="${payloadDetail.logTimestamp}"></td>
                         <td>
-                            <button class="btn btn-outline-secondary btn-sm btn-hover" onclick="openModal('${service}', '${correlationId}', '${reservationNumber}', '${fromDate}', '${toDate}')">View</button>
+                            <button class="btn btn-outline-secondary btn-sm btn-hover" onclick="openModal('${service}', '${correlationId}', '${confirmationNumber}', '${fromDate}', '${toDate}')">View</button>
                         </td>
                         <td>
-                            <button class="btn btn-outline-secondary btn-sm btn-hover" onclick="downloadMainPayload('${service}', '${correlationId}', '${reservationNumber}', '${fromDate}', '${toDate}')">Download</button>
+                            <button class="btn btn-outline-secondary btn-sm btn-hover" onclick="downloadMainPayload('${service}', '${correlationId}', '${confirmationNumber}', '${fromDate}', '${toDate}')">Download</button>
                         </td>
                         <td>
                             <select id="drillDownSelect" class="form-select form-select-sm">
@@ -245,9 +245,9 @@
             e.clearSelection();
         });
 
-        function openModal(service, correlationId, reservationNumber, fromDate, toDate) {
+        function openModal(service, correlationId, confirmationNumber, fromDate, toDate) {
             const modal = document.getElementById('previewModal');
-            const payload = `Service: ${service}\nConfirmation ID: ${correlationId}\nReservation Number: ${reservationNumber}\nFrom Date: ${fromDate}\nTo Date: ${toDate}`;
+            const payload = `Service: ${service}\nConfirmation ID: ${correlationId}\nConfirmationNumber: ${confirmationNumber}\nFrom Date: ${fromDate}\nTo Date: ${toDate}`;
             document.getElementById('modalPayload').innerText = payload;
             modal.style.display = "block";
         }
@@ -257,8 +257,8 @@
             modal.style.display = "none";
         }
 
-        function downloadMainPayload(service, correlationId, reservationNumber, fromDate, toDate) {
-            const payload = `Service: ${service}\nConfirmation ID: ${correlationId}\nReservation Number: ${reservationNumber}\nFrom Date: ${fromDate}\nTo Date: ${toDate}`;
+        function downloadMainPayload(service, correlationId, confirmationNumber, fromDate, toDate) {
+            const payload = `Service: ${service}\nConfirmation ID: ${correlationId}\nConfirmation Number: ${confirmationNumber}\nFrom Date: ${fromDate}\nTo Date: ${toDate}`;
             const blob = new Blob([payload], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -329,14 +329,14 @@
 
         function toggleIdentifierInput() {
             const identifierType = document.getElementById('identifierType').value;
-            const reservationNumberInput = document.getElementById('reservationNumberInput');
+            const confirmationNumberInput = document.getElementById('confirmationNumberInput');
             const correlationIdInput = document.getElementById('correlationIdInput');
 
-            reservationNumberInput.style.display = 'none';
+            confirmationNumberInput.style.display = 'none';
             correlationIdInput.style.display = 'none';
 
             if (identifierType === 'confirmationNumber') {
-                reservationNumberInput.style.display = 'block';
+                confirmationNumberInput.style.display = 'block';
             } else if (identifierType === 'correlationId') {
                 correlationIdInput.style.display = 'block';
             }
@@ -344,7 +344,7 @@
 
         function validateForm() {
             const identifierType = document.getElementById('identifierType').value;
-            const reservationNumber = document.getElementById('reservationNumber').value;
+            const confirmationNumber = document.getElementById('confirmationNumber').value;
             const correlationId = document.getElementById('correlationId').value;
             const fromDate = document.getElementById('fromDate').value;
             const toDate = document.getElementById('toDate').value;
@@ -377,11 +377,11 @@
                 document.getElementById('identifierTypeError').style.display = 'none';
             }
 
-            if (identifierType === 'confirmationNumber' && !reservationNumber) {
-                document.getElementById('reservationNumberError').style.display = 'block';
+            if (identifierType === 'confirmationNumber' && !confirmationNumber) {
+                document.getElementById('confirmationNumberError').style.display = 'block';
                 isValid = false;
             } else {
-                document.getElementById('reservationNumberError').style.display = 'none';
+                document.getElementById('confirmationNumberError').style.display = 'none';
             }
 
             if (identifierType === 'correlationId' && !correlationId) {

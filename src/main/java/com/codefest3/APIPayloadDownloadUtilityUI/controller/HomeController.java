@@ -29,7 +29,7 @@ public class HomeController {
 
     @GetMapping("/payload/fetch")
     public String fetchPayload(@RequestParam("service") String serviceName,
-                               @RequestParam(value = "reservationNumber", required = false) String confirmationNumber,
+                               @RequestParam(value = "confirmationNumber", required = false) String confirmationNumber,
                                @RequestParam(value = "correlationId", required = false) String correlationId,
                                @RequestParam(value = "fromDate", required = false) String startDate,
                                @RequestParam(value = "toDate", required = false) String endDate,
@@ -44,7 +44,7 @@ public class HomeController {
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
         model.addAttribute("identifierType", identifierType);
-        model.addAttribute("reservationNumber", confirmationNumber);
+        model.addAttribute("confirmationNumber", confirmationNumber);
         model.addAttribute("correlationId", correlationId);
         model.addAttribute("responseAvailable", true);
 
