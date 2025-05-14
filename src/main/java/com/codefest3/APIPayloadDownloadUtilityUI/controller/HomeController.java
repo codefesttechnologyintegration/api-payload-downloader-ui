@@ -28,7 +28,7 @@ public class HomeController {
     }
 
     @GetMapping("/payload/fetch")
-    public String fetchPayload(@RequestParam("service") String serviceName,
+    public String fetchPayload(@RequestParam("serviceName") String serviceName,
                                @RequestParam(value = "confirmationNumber", required = false) String confirmationNumber,
                                @RequestParam(value = "correlationId", required = false) String correlationId,
                                @RequestParam(value = "startDate", required = false) String startDate,
@@ -36,11 +36,12 @@ public class HomeController {
                                @RequestParam("identifierType") String identifierType,
 
                                Model model) {
+
         ApiPayloadResponse apiPayloadResponse = getApiPayload(serviceName, confirmationNumber, correlationId,
             startDate, endDate);
 
         model.addAttribute("payloadDetails", apiPayloadResponse.getPayloadDetailsList());
-        model.addAttribute("service", serviceName);
+        model.addAttribute("serviceName", serviceName);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
         model.addAttribute("identifierType", identifierType);
