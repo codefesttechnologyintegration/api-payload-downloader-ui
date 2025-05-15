@@ -28,12 +28,31 @@ public class DataController {
     return getApiPayload(serviceName, correlationId).getPayload();
   }
 
+  @GetMapping("/payload/drilldown/view")
+  public String viewDrillDownPayload(@RequestParam(value = "serviceName", required = false) String serviceName,
+      @RequestParam(value = "correlationId", required = false) String correlationId,
+      @RequestParam(value = "drillDownOption", required = false) String drillDownOption) {
+    return getApiDrillDownPayload(serviceName, correlationId, drillDownOption).getPayload();
+  }
+
   public ApiPayloadDataResponse getApiPayload(String serviceName, String correlationId) {
 
     String baseUrl = "http://localhost:8081/v1/api/payload/content";
     URI uri = UriComponentsBuilder.fromUriString(baseUrl)
         .queryParam("serviceName", serviceName)
         .queryParam("correlationId", correlationId)
+        .build().toUri();
+
+    return restTemplate.getForObject(uri, ApiPayloadDataResponse.class);
+  }
+
+  public ApiPayloadDataResponse getApiDrillDownPayload(String serviceName, String correlationId, String drillDownOption) {
+
+    String baseUrl = "http://localhost:8081/v1/api/payload/drilldown/content";
+    URI uri = UriComponentsBuilder.fromUriString(baseUrl)
+        .queryParam("serviceName", serviceName)
+        .queryParam("correlationId", correlationId)
+        .queryParam("drillDownOption", drillDownOption)
         .build().toUri();
 
     return restTemplate.getForObject(uri, ApiPayloadDataResponse.class);

@@ -311,44 +311,35 @@
         }
 
         function drillDownView(button) {
-            const selectedOption = button.parentNode.parentNode.parentNode.children[6].children[0].value;
-            let payload = '';
+            const drillDownOptionVal = button.parentNode.parentNode.parentNode.children[6].children[0].value;
+            const serviceNameVal = button.parentNode.parentNode.parentNode.children[0].innerText;
+            const correlationIdVal = button.parentNode.parentNode.parentNode.children[2].innerText;
 
-            if (selectedOption === 'payment') {
-                payload = 'Payment Details:\nAmount: $100\nMethod: Credit Card\nStatus: Completed';
-            } else if (selectedOption === 'address') {
-                payload = 'Address Details:\nStreet: 123 Main St\nHouse Number: 456\nZipcode: 78910';
-            } else {
-                payload = 'Please select a valid option from the Drill Down menu.';
-            }
-
-            const modal = document.getElementById('previewModal');
-            document.getElementById('modalPayload').innerText = payload;
-            modal.style.display = "block";
-        }
-
-        function drillDownDownload() {
-            const selectedOption = document.getElementById('drillDownSelect').value;
-            let payload = '';
-
-            if (selectedOption === 'payment') {
-                payload = 'Payment Details:\nAmount: $100\nMethod: Credit Card\nStatus: Completed';
-            } else if (selectedOption === 'address') {
-                payload = 'Address Details:\nStreet: 123 Main St\nHouse Number: 456\nZipcode: 78910';
-            } else {
-                alert('Please select a valid option from the Drill Down menu.');
+            if(drillDownOptionVal == 'Select Option'){
+                alert('Please select valid Drill Down Option!');
                 return;
             }
 
-            const blob = new Blob([payload], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${selectedOption}_details.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            const params = new URLSearchParams({
+                serviceName: serviceNameVal,
+                correlationId: correlationIdVal,
+                drillDownOption: drillDownOptionVal
+            });
+
+            fetch('/payload/drilldown/view?' + params.toString(), {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+            })
+            .then(response => response.text())
+            .then(data => {
+                const payload = JSON.stringify(JSON.parse(data), null, 2);
+                const modal = document.getElementById('previewModal');
+                document.getElementById('modalPayload').innerText = payload;
+                modal.style.display = "block";
+            })
+            .catch(err => console.error('Error:', err));
         }
 
         function toggleRaw() {
