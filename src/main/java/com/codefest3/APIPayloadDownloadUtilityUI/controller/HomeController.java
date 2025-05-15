@@ -1,25 +1,25 @@
 package com.codefest3.APIPayloadDownloadUtilityUI.controller;
 
 import com.codefest3.APIPayloadDownloadUtilityUI.model.response.ApiPayloadResponse;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class HomeController {
+
     private final RestTemplate restTemplate;
+
     public HomeController(RestTemplate restTemplate) {
-    this.restTemplate = restTemplate;
+        this.restTemplate = restTemplate;
     }
 
     @GetMapping("/")

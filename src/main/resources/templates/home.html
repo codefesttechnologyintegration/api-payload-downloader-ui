@@ -62,6 +62,10 @@
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
+            height: 600px;
+        }
+        .modal-payload {
+            height: 500px;
         }
         .close {
             color: #aaa;
@@ -201,10 +205,10 @@
                         <td th:text="${payloadDetail.correlationId}"></td>
                         <td th:text="${payloadDetail.logTimestamp}"></td>
                         <td>
-                            <button class="btn btn-outline-secondary btn-sm btn-hover" onclick="openModal('${serviceName}', '${correlationId}', '${confirmationNumber}', '${startDate}', '${endDate}')">View</button>
+                            <button class="btn btn-outline-secondary btn-sm btn-hover" onclick="openModal(this)">View</button>
                         </td>
                         <td>
-                            <button class="btn btn-outline-secondary btn-sm btn-hover" onclick="downloadMainPayload('${serviceName}', '${correlationId}', '${confirmationNumber}', '${startDate}', '${endDate}')">Download</button>
+                            <button class="btn btn-outline-secondary btn-sm btn-hover" onclick="downloadMainPayload(this)">Download</button>
                         </td>
                         <td>
                             <select id="drillDownSelect" class="form-select form-select-sm">
@@ -228,7 +232,7 @@
     <div id="previewModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <pre id="modalPayload"></pre>
+            <pre id="modalPayload" class="modal-payload"></pre>
             <button id="copyBtn" class="btn btn-outline-secondary btn-sm btn-hover" data-clipboard-target="#modalPayload"> Copy</button>
         </div>
     </div>
@@ -245,11 +249,29 @@
             e.clearSelection();
         });
 
-        function openModal(serviceName, correlationId, confirmationNumber, startDate, endDate) {
-            const modal = document.getElementById('previewModal');
-            const payload = `Service Name: ${serviceName}\nConfirmation ID: ${correlationId}\nConfirmationNumber: ${confirmationNumber}\nStart Date: ${startDate}\nEnd Date: ${endDate}`;
-            document.getElementById('modalPayload').innerText = payload;
-            modal.style.display = "block";
+        function openModal(button) {
+            const serviceNameVal = button.parentNode.parentNode.children[0].innerText;
+            const correlationIdVal = button.parentNode.parentNode.children[2].innerText;
+
+            const params = new URLSearchParams({
+                serviceName: serviceNameVal,
+                correlationId: correlationIdVal
+            });
+
+            fetch('/payload/view?' + params.toString(), {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+            })
+            .then(response => response.text())
+            .then(data => {
+                const modal = document.getElementById('previewModal');
+                const payload = JSON.stringify(JSON.parse(data), null, 2);
+                document.getElementById('modalPayload').innerText = payload;
+                modal.style.display = "block";
+            })
+            .catch(err => console.error('Error:', err));
         }
 
         function closeModal() {
@@ -257,17 +279,35 @@
             modal.style.display = "none";
         }
 
-        function downloadMainPayload(serviceName, correlationId, confirmationNumber, startDate, endDate) {
-            const payload = `Service Name: ${serviceName}\nConfirmation ID: ${correlationId}\nConfirmation Number: ${confirmationNumber}\nStart Date: ${startDate}\nEnd Date: ${endDate}`;
-            const blob = new Blob([payload], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'main_payload.txt';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+        function downloadMainPayload(button) {
+            const serviceNameVal = button.parentNode.parentNode.children[0].innerText;
+            const correlationIdVal = button.parentNode.parentNode.children[2].innerText;
+
+            const params = new URLSearchParams({
+                serviceName: serviceNameVal,
+                correlationId: correlationIdVal
+            });
+
+            fetch('/payload/view?' + params.toString(), {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+            })
+            .then(response => response.text())
+            .then(data => {
+                const payload = JSON.stringify(JSON.parse(data), null, 2);
+                const blob = new Blob([payload], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'main_payload.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            })
+            .catch(err => console.error('Error:', err));
         }
 
         function drillDownView(button) {
